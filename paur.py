@@ -23,6 +23,7 @@ hp_logo = base64.b64encode(open("hp.png", "rb").read())
 
 parser = ArgumentParser(description=u"Notify smartsheet owners of non-HP shares")
 parser.add_argument("filename", nargs="?", default=default_filename, help=u"File to read.  Must be XLSX format. Set default in confuration.py")
+parser.add_argument("--go", action="store_true", help="with --go, the program does not wait for confirmation. It sends email. Useful for automated running. ")
 ns = parser.parse_args()
 
 data = excel2dict(ns.filename)
@@ -46,7 +47,9 @@ for row in data:
 for owner in owners:
 	print(owner)
 
-#raw_input(u"Sending {0} emails. Press ^C to cancel. Any key to continue...".format(len(owners)))
+
+if not ns.go:
+	raw_input(u"Sending {0} emails. Press ^C to cancel. Any key to continue...".format(len(owners)))
 
 log = file("log.txt", "a")
 

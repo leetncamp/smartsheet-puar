@@ -19,6 +19,14 @@ redirect_emails_to = u"terrence.gaines@hp.com"  #Normally an empty string.  Set 
 stop_after = 1  #Set this to zero to send all emails. 
 </pre>
 
+
+###Using the program###
+2. Install `git` version control software. Available from https://git-scm.com/download/win
+3. open a command prompt and change directories to your Desktop
+5. Cloning will create a folder called paur. Change directories to paur.
+8. Copy configuration.py.sample to configuration.py.  Make any modifications to configuration.py you want. 
+9. Download UserAccessReport.xlsx from smartsheets to the same folder as paur.exe
+
 ##Windows Development Setup##
 
 1. Install python. Available from http://python.org
@@ -29,3 +37,4 @@ stop_after = 1  #Set this to zero to send all emails.
 6. execute   `pip install -r requirement.txt`  This installs the necessary python modules to run paur.py
 7. To build a windows binary that doesn't depend on a python installation, execute `build.bat`.  See paur.exe. 
 8. Copy configuration.py.sample to configuration.py.  Make any modifications to configuration.py you want. 
+9. Download UserAccessReport.xlsx from smartsheets to the same folder as paur.exe
