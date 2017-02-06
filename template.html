@@ -1,0 +1,30 @@
+<head>
+<style>
+td, th {
+	padding:5px;
+}
+</style>
+</head>
+
+Dear {{firstname}},
+
+<p>You own {{rows|length}} Smartsheets that have been shared externally.</p>
+
+<table border="1" style="border-collapse: collapse;">
+	<tr>
+		{% for header in headers_in_email %}
+			<th>{{header}}</th>
+		{% endfor %}
+	</tr>
+	{% for row in rows %}
+		<tr>
+			{% for header in headers_in_email %}
+				<td>{{row[header]}}</td>
+			{% endfor %}
+		</tr>
+	{% endfor %}
+</table>
+
+<p>Please let <a href="mailto:{{smartsheet_manager}}?Subject=Smartsheet%20security&Body=Please%20retract%20sharing%20on%20the%20Smartsheet%20named:">Terrence Gaines</a> know if sharing should be discontinued on any of these sheets. </p>
+
+
