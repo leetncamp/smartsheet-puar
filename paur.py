@@ -14,6 +14,9 @@ LA = pytz.timezone("America/Los_Angeles")
 from snlmailer import Message
 from configuration import *  #supplies From and Subject for the email
 from collections import OrderedDict
+import datetime
+
+now = "LA.localize(datetime.datetime.now()){0}".format(log_format)
 
 
 parser = ArgumentParser(description=u"Notify non-HP smartsheet owners")
@@ -43,16 +46,25 @@ for owner in owners:
 
 raw_input(u"Sending {0} emails. Press ^C to cancel. Any key to continue...".format(len(owners)))
 
-headers_in_email = [u'Name', u'Type', u'Shared To', u'Shared To Permission', 'Last Modified Date/Time (UTC)']
+log = file("log.txt", "a")
+
+headers_in_email = [u'Name', u'Type', u'Shared To', u'Shared To Permission', "Last Modified (PT)"]
 template = Template(open(u"template.html", 'rb').read())
+
 for owner, rows in owners.iteritems():
+
+	for row in rows:
+		#normalize timezone to Pacific Time rather than UTC
+		row["Modified (Pacific Time)"] = LA.normalize(UTC.localize(row["Last Modified Date/Time (UTC)"]))
+
 	firstname = owner.split(".")[0].capitalize()
 	html = template.render(**locals())
 	msg = Message(To="lee@snl.salk.edu", From=From)
 	msg.Subject = Subject
 	msg.Html = html
 	file("/tmp/delme.html", "wb").write(html)
-	os.system('open /tmp/delme.html')
 	msg.snlSend()
+	dt = eval(now)
+	log.write(u"{0}\tEmailed {1} : {2}".format(dt, owner, html))
 	print(u"Sending to {0}".format(owner))
 	sys.exit()
