@@ -19,8 +19,6 @@ import base64
 
 now = "LA.localize(datetime.datetime.now()){0}".format(log_format)
 
-hp_logo = base64.b64encode(open("hp.png", "rb").read())
-
 parser = ArgumentParser(description=u"Notify smartsheet owners of non-HP shares")
 parser.add_argument("filename", nargs="?", default=default_filename, help=u"File to read.  Must be XLSX format. Set default in confuration.py")
 parser.add_argument("--go", action="store_true", help="with --go, the program does not wait for confirmation. It sends email. Useful for automated running. ")
