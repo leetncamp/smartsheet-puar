@@ -26,6 +26,7 @@ stop_after = 1  #Set this to zero to send all emails.
 5. Cloning will create a folder called paur. Change directories to paur.
 8. Copy configuration.py.sample to configuration.py.  Make any modifications to configuration.py you want. 
 9. Download UserAccessReport.xlsx from smartsheets to the same folder as paur.exe
+9. Doubloe-click paur.exe in Explorer
 
 ##Windows Development Setup##
 
