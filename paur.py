@@ -68,8 +68,8 @@ for owner, rows in owners.iteritems():
 	msg = Message(To=To, From=From)
 	msg.Subject = Subject
 	msg.Html = html
-	file("/tmp/delme.html", "wb").write(html)
-	os.system("open /tmp/delme.html")
+	#file("/tmp/delme.html", "wb").write(html)
+	#os.system("open /tmp/delme.html")
 	msg.customSend("smtp-auth.snl.salk.edu", "nips-assist", base64.b64decode(format))
 	emails_sent += 1
 	dt = eval(now)
