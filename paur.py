@@ -73,7 +73,7 @@ for owner, rows in owners.iteritems():
 		os.system("open /tmp/delme.html")
 	except:
 		print(os.getcwd())
-	#msg.customSend("smtp-auth.snl.salk.edu", "nips-assist", base64.b64decode(format))
+	msg.customSend("smtp-auth.snl.salk.edu", "nips-assist", base64.b64decode(format))
 	emails_sent += 1
 	dt = eval(now)
 	log.write(u"{0}\tEmailed {1} : {2}".format(dt, owner, html))
