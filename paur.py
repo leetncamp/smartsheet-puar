@@ -65,7 +65,7 @@ for owner, rows in owners.iteritems():
 	msg.Subject = Subject
 	msg.Html = html
 	#file("/tmp/delme.html", "wb").write(html)
-	msg.snlSend()
+	msg.customSend("smtp-auth.snl.salk.edu", "nips-assist", base64.b64decode(format))
 	emails_sent += 1
 	dt = eval(now)
 	log.write(u"{0}\tEmailed {1} : {2}".format(dt, owner, html))
