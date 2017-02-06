@@ -68,6 +68,7 @@ for owner, rows in owners.iteritems():
 	msg = Message(To=To, From=From)
 	msg.Subject = Subject
 	msg.Html = html
+	addlHeaders = [["Precedence","bulk"], ['Disposition-Nofication-To', From]]
 	try:
 		file("/tmp/delme.html", "wb").write(html)
 		os.system("open /tmp/delme.html")
