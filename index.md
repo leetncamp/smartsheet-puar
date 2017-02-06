@@ -9,11 +9,11 @@ download `UserAccessReport.xlsx` from smartseets into the same folder as paur.ex
 Some things can be modified by changing the content of configuration.py.
 
 <pre>
-Subject = u"Smartsheets"
-From = u"do-not-reply@nips.cc"
-default_filename = u"UserAccessReport.xlsx"
-smartsheet_manager = u"Terrence Gaines <terrence.gaines@hp.com>"
-log_format = ".isoformat()"
+Subject = u"Smartsheets"  #The subject of the email.
+From = u"do-not-reply@nips.cc"  #The from address of the email
+default_filename = u"UserAccessReport.xlsx"  #If you dont' supply the name of an excel spreadsheet, this one is opened. 
+smartsheet_manager = u"Terrence Gaines <terrence.gaines@hp.com>"  #Currently not used. 
+log_format = ".isoformat()"  #A log file is written each time paur.exe is run. This is the datestamp format. Make it HP compatible for logging. 
 date_format = u"%Y-%m-%d %H:%M"  #This currently is not used, but if we displayed the modified date of the sheet, this controls the format.
 redirect_emails_to = u"terrence.gaines@hp.com"  #Normally an empty string.  Set to your email address to send all output to you. 
 stop_after = 1  #Set this to zero to send all emails. 
