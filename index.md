@@ -3,6 +3,10 @@
 Paur opens an Excel spreadsheet containing data on smartsheet shares and owners.  It emails HP owners of smartsheets that are
 shared to non-HP people.
 
+This repository contains a Windows binary, paur.exe.  Execute `paur.exe --help` to see full options. In short,
+download `UserAccessReport.xlsx` from smartseets into the same folder as paur.exe. Run `paur.exe`
+
+
 ##Windows Development Setup##
 
 1. Install python. Available from http://python.org
