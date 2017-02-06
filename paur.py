@@ -48,16 +48,18 @@ raw_input(u"Sending {0} emails. Press ^C to cancel. Any key to continue...".form
 
 log = file("log.txt", "a")
 
-headers_in_email = [u'Name', u'Type', u'Shared To', u'Shared To Permission', "Last Modified (PT)"]
+headers_in_email = [u'Name', u'Type', u"Owner", u'Shared To', u'Shared To Permission', "Last Modified (PT)"]
 template = Template(open(u"template.html", 'rb').read())
 
 for owner, rows in owners.iteritems():
 
 	for row in rows:
 		#normalize timezone to Pacific Time rather than UTC
-		row["Modified (Pacific Time)"] = LA.normalize(UTC.localize(row["Last Modified Date/Time (UTC)"]))
+		row["Last Modified (PT)"] = LA.normalize(UTC.localize(row["Last Modified Date/Time (UTC)"])).strftime(date_format)
+		#row["owner_email"] = owner.replace(u"@hp.com", u"")
 
 	firstname = owner.split(".")[0].capitalize()
+
 	html = template.render(**locals())
 	msg = Message(To="lee@snl.salk.edu", From=From)
 	msg.Subject = Subject
