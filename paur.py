@@ -19,8 +19,8 @@ import datetime
 now = "LA.localize(datetime.datetime.now()){0}".format(log_format)
 
 
-parser = ArgumentParser(description=u"Notify non-HP smartsheet owners")
-parser.add_argument("filename", nargs="?", default="Access.xlsx", help=u"File to read.  Must be XLSX format.")
+parser = ArgumentParser(description=u"Notify smartsheet owners of non-HP shares")
+parser.add_argument("filename", nargs="?", default=default_filename, help=u"File to read.  Must be XLSX format. Set default in confuration.py")
 ns = parser.parse_args()
 
 data = excel2dict(ns.filename)
@@ -50,7 +50,7 @@ log = file("log.txt", "a")
 
 headers_in_email = [u'Name', u'Type', u"Owner", u'Shared To', u'Shared To Permission', "Last Modified (PT)"]
 template = Template(open(u"template.html", 'rb').read())
-
+emails_sent = 0
 for owner, rows in owners.iteritems():
 
 	for row in rows:
@@ -59,14 +59,19 @@ for owner, rows in owners.iteritems():
 		#row["owner_email"] = owner.replace(u"@hp.com", u"")
 
 	firstname = owner.split(".")[0].capitalize()
-
+	debug()
 	html = template.render(**locals())
-	msg = Message(To="lee@snl.salk.edu", From=From)
+	To = redirect_emails_to if redirect_emails_to else owner
+	msg = Message(To=To, From=From)
 	msg.Subject = Subject
 	msg.Html = html
-	file("/tmp/delme.html", "wb").write(html)
+	#file("/tmp/delme.html", "wb").write(html)
 	msg.snlSend()
+	emails_sent += 1
 	dt = eval(now)
 	log.write(u"{0}\tEmailed {1} : {2}".format(dt, owner, html))
 	print(u"Sending to {0}".format(owner))
-	sys.exit()
+	if emails_sent >= stop_after:
+		break
+
+print(u"Sent {0} emails".format(emails_sent))
