@@ -15,6 +15,7 @@ from snlmailer import Message
 from configuration import *  #supplies From and Subject for the email
 from collections import OrderedDict
 import datetime
+import base64
 
 now = "LA.localize(datetime.datetime.now()){0}".format(log_format)
 
