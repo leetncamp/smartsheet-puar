@@ -59,7 +59,6 @@ for owner, rows in owners.iteritems():
 		#row["owner_email"] = owner.replace(u"@hp.com", u"")
 
 	firstname = owner.split(".")[0].capitalize()
-	debug()
 	html = template.render(**locals())
 	To = redirect_emails_to if redirect_emails_to else owner
 	msg = Message(To=To, From=From)
