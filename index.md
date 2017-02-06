@@ -28,3 +28,4 @@ stop_after = 1  #Set this to zero to send all emails.
 5. Cloning will create a folder called paur. Change directories to paur.
 6. execute   `pip install -r requirement.txt`  This installs the necessary python modules to run paur.py
 7. To build a windows binary that doesn't depend on a python installation, execute `build.bat`.  See paur.exe. 
+8. Copy configuration.py.sample to configuration.py.  Make any modifications to configuration.py you want. 
