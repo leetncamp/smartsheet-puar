@@ -4,30 +4,59 @@ td, th {
 	padding:5px;
 }
 table {
-    font-size:11px;
+    /*font-size:11px;*/
 }
+
+th {
+	color:white;
+	background-color: #888888;
+}
+
+.gray {
+	color:gray;
+}
+
+.pull-right {
+	float:right;
+}
+
+@font-face {
+	font-family: HPSimplified;
+	src: url(fonts/HPSimplified_Rg.ttf);
+}
+
 </style>
+
 </head>
 
-Dear {{firstname}},
+<body style="font-family:HPSimplified">
 
-<p>You own {{rows|length}} Smartsheets that have been shared externally to HP.</p>
+	<p>Attached is your collaborator report for review.  The report includes a list of all sheets that are being shared with
+	Non-HP employees. Please remember to remove permission for those who no longer need access to your sheets.</p>
 
-<table border="1" style="border-collapse: collapse;">
-	<tr>
-		{% for header in headers_in_email %}
-			<th>{{header}}</th>
-		{% endfor %}
-	</tr>
-	{% for row in rows %}
+	<div>
+		<img style="float:right;height:75px" src="data:image/png;base64,{{hp_logo}}">
+		<h3>{{firstname}} {{lastname}}</h3>
+	</div>
+	<br><br>
+	<table border="1" style="border-collapse: collapse;">
 		<tr>
+			<td></td>
 			{% for header in headers_in_email %}
-				<td>{{row[header]}}</td>
+				<th>{{header}}</th>
 			{% endfor %}
 		</tr>
-	{% endfor %}
-</table>
+		{% for row in rows %}
+			<tr>
+				<td class="gray">{{loop.index}}</td>
+				{% for header in headers_in_email %}
+					<td>{{row[header]}}</td>
+				{% endfor %}
+			</tr>
+		{% endfor %}
+	</table>
 
-<p>Please let <a href="mailto:{{smartsheet_manager}}?Subject=Smartsheet%20security&Body=Please%20discontinue%20sharing%20on%20the%20Smartsheet%20named: [put%20sheet%20name%20here]">Terrence Gaines</a> know if sharing should be discontinued on any of these sheets. </p>
+	<p>Please let <a href="mailto:{{smartsheet_manager}}?Subject=Smartsheet%20security&Body=Please%20discontinue%20sharing%20on%20the%20Smartsheet%20named: [put%20sheet%20name%20here]">Terrence Gaines</a> know if sharing should be discontinued on any of these sheets. </p>
 
 
+</body>

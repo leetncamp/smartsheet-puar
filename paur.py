@@ -19,6 +19,7 @@ import base64
 
 now = "LA.localize(datetime.datetime.now()){0}".format(log_format)
 
+hp_logo = base64.b64encode(open("hp.png", "rb").read())
 
 parser = ArgumentParser(description=u"Notify smartsheet owners of non-HP shares")
 parser.add_argument("filename", nargs="?", default=default_filename, help=u"File to read.  Must be XLSX format. Set default in confuration.py")
@@ -45,11 +46,11 @@ for row in data:
 for owner in owners:
 	print(owner)
 
-raw_input(u"Sending {0} emails. Press ^C to cancel. Any key to continue...".format(len(owners)))
+#raw_input(u"Sending {0} emails. Press ^C to cancel. Any key to continue...".format(len(owners)))
 
 log = file("log.txt", "a")
 
-headers_in_email = [u'Name', u'Type', u"Owner", u'Shared To', u'Shared To Permission', "Last Modified (PT)"]
+headers_in_email = [u'Sheet Name', u'Shared To Permission', u'Shared To']
 template = Template(open(u"template.html", 'rb').read())
 emails_sent = 0
 for owner, rows in owners.iteritems():
@@ -58,14 +59,17 @@ for owner, rows in owners.iteritems():
 		#normalize timezone to Pacific Time rather than UTC
 		row["Last Modified (PT)"] = LA.normalize(UTC.localize(row["Last Modified Date/Time (UTC)"])).strftime(date_format)
 		#row["owner_email"] = owner.replace(u"@hp.com", u"")
+		row["Sheet Name"] = row[u"Name"]
 
-	firstname = owner.split(".")[0].capitalize()
+	firstname = owner.split(u".")[0].capitalize()
+	lastname = owner.split(u".")[1].split("@")[0].capitalize()
 	html = template.render(**locals())
 	To = redirect_emails_to if redirect_emails_to else owner
 	msg = Message(To=To, From=From)
 	msg.Subject = Subject
 	msg.Html = html
-	#file("/tmp/delme.html", "wb").write(html)
+	file("/tmp/delme.html", "wb").write(html)
+	os.system("open /tmp/delme.html")
 	msg.customSend("smtp-auth.snl.salk.edu", "nips-assist", base64.b64decode(format))
 	emails_sent += 1
 	dt = eval(now)
