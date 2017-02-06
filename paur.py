@@ -71,7 +71,7 @@ for owner, rows in owners.iteritems():
 	dt = eval(now)
 	log.write(u"{0}\tEmailed {1} : {2}".format(dt, owner, html))
 	print(u"Sending to {0}".format(owner))
-	if emails_sent >= stop_after:
+	if stop_after and emails_sent >= stop_after:
 		break
 
 print(u"Sent {0} emails".format(emails_sent))
