@@ -6,6 +6,18 @@ shared to non-HP people.
 This repository contains a Windows binary, paur.exe.  Execute `paur.exe --help` to see full options. In short,
 download `UserAccessReport.xlsx` from smartseets into the same folder as paur.exe. Run `paur.exe`
 
+Some things can be modified by changing the content of configuration.py.
+
+<pre>
+Subject = u"Smartsheets"
+From = u"do-not-reply@nips.cc"
+default_filename = u"UserAccessReport.xlsx"
+smartsheet_manager = u"Terrence Gaines <terrence.gaines@hp.com>"
+log_format = ".isoformat()"
+date_format = u"%Y-%m-%d %H:%M"  #This currently is not used, but if we displayed the modified date of the sheet, this controls the format.
+redirect_emails_to = u"terrence.gaines@hp.com"  #Normally an empty string.  Set to your email address to send all output to you. 
+stop_after = 1  #Set this to zero to send all emails. 
+</pre>
 
 ##Windows Development Setup##
 
