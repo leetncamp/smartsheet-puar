@@ -1,4 +1,4 @@
-c:\Python27\Scripts\pyinstaller.exe -F paur.py 
+pyinstaller.exe -F --add-data fonts;fonts --add-data hp.png;hp.png paur.py 
 move dist\paur.exe
 del /s/q dist
 del /s/q build
