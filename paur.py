@@ -82,3 +82,4 @@ for owner, rows in owners.iteritems():
 		break
 
 print(u"Sent {0} emails".format(emails_sent))
+raw_input("Press any key to exit.")
