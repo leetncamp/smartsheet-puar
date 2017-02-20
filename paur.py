@@ -20,7 +20,7 @@ import base64
 now = "LA.localize(datetime.datetime.now()){0}".format(log_format)
 
 parser = ArgumentParser(description=u"Notify smartsheet owners of non-HP shares")
-parser.add_argument("filename", nargs="?", default=default_filename, help=u"File to read.  Must be XLSX format. Set default in confuration.py")
+parser.add_argument("filename", nargs="?", default=default_filename, help=u"File to read.  Must be XLSX format. Set default in configuration.py")
 parser.add_argument("--go", action="store_true", help="with --go, the program does not wait for confirmation. It sends email. Useful for automated running. ")
 ns = parser.parse_args()
 
@@ -78,7 +78,7 @@ for owner, rows in owners.iteritems():
 	msg.customSend("smtp-auth.snl.salk.edu", "nips-assist", base64.b64decode(format))
 	emails_sent += 1
 	dt = eval(now)
-	log.write(u"{0}\tEmailed {1} : {2}".format(dt, owner, html))
+	log.write(u"{0}\tEmailed {1} : {2}".format(dt, msg.To, html))
 	print(u"Sending to {0}".format(owner))
 	if stop_after and emails_sent >= stop_after:
 		break
