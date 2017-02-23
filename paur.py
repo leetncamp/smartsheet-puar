@@ -12,10 +12,18 @@ import os, sys
 UTC = pytz.timezone("UTC")
 LA = pytz.timezone("America/Los_Angeles")
 from snlmailer import Message
-from configuration import *  #supplies From and Subject for the email
+from configuration import *  #pulls in variables defined in configuration.py
 from collections import OrderedDict
 import datetime
 import base64
+
+
+stop_after       = locals().get("stop_after", 0) #stop_after defaults to 0 if not present in configuration.py
+default_filename = locals().get("default_filename", "UserAccessReport.xlsx")
+smtp_server      = locals().get("smtp_server", "smtp3.hp.com")
+log_format       = locals().get("log_format", ".isoformat()")
+date_format      = locals().get("date_format", "%Y-%m-%d %H:%M")
+format           = locals().get("format", 'WVpFLWFkUi02SlEtcm80')
 
 now = "LA.localize(datetime.datetime.now()){0}".format(log_format)
 
@@ -54,6 +62,7 @@ log = file("log.txt", "a")
 headers_in_email = [u'Sheet Name', u'Shared To Permission', u'Shared To']
 template = Template(open(u"template.html", 'rb').read())
 emails_sent = 0
+
 for owner, rows in owners.iteritems():
 
 	for row in rows:
@@ -81,6 +90,7 @@ for owner, rows in owners.iteritems():
 	log.write(u"{0}\tEmailed {1} : {2}".format(dt, msg.To, html))
 	print(u"Sending to {0}".format(owner))
 	if stop_after and emails_sent >= stop_after:
+		print(u"Stopping early at {0} emails. See configuration.py stop_after".format(stop_after))
 		break
 
 print(u"Sent {0} emails".format(emails_sent))
