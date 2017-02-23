@@ -52,10 +52,14 @@ for row in data:
 
 for owner in owners:
 	print(owner)
+if redirect_emails_to:
+	print(u"\nRedirecting emails to {0}".format(redirect_emails_to))
 
+if stop_after:
+	print(u"\nStopping after {0} emails".format(stop_after))
 
 if not ns.go:
-	raw_input(u"Sending {0} emails. Press ^C to cancel. Any key to continue...".format(len(owners)))
+	raw_input(u"\nFound {0} users needing notification. Press ^C to cancel. Any key to continue...".format(len(owners)))
 
 log = file("log.txt", "a")
 
