@@ -92,7 +92,7 @@ for owner, rows in owners.iteritems():
 	
 	#msg.customSend("smtp-auth.snl.salk.edu", "nips-assist", base64.b64decode(format))
 
-	msg.customSend("smtp-auth.snl.salk.edu")
+	msg.customSend(smtp_server)
 	emails_sent += 1
 	dt = eval(now)
 	log.write(u"{0}\tEmailed {1} : {2}".format(dt, msg.To, html))
