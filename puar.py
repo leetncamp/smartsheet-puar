@@ -36,8 +36,7 @@ data = excel2dict(ns.filename)
 
 hpRE = re.compile("@hp.com", re.I)
 
-png_data = base64.b64encode(open("hp_logo.png", "rb").read())
-
+png_data = base64.b64encode(open("image001.png", "rb").read())
 
 owners = {}
 count = 0
