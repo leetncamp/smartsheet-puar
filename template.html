@@ -1,6 +1,16 @@
 <head>
 
 	<style>
+		.image-right {
+			display:block;
+			text-align:right;
+		}
+
+		.logo {
+			height:45px;
+			width:45px;
+		}
+
 		td, th {
 			padding:5px;
 		}
@@ -26,13 +36,13 @@
 		}
 
 		.index {
-			color:gray;
+			/*color:gray;
 			border-style:none !important;
-			text-align:right;
+			text-align:right;*/
 		}
 
 		.corner {
-			border-style:none !important;
+			/*border-style:none !important;*/
 
 		}
 
@@ -45,24 +55,25 @@
 </head>
 
 <body>
+	<div class="image-right">
+		<img class="logo" src="data:image/png;base64,{{png_data}}", alt="HP_logo.png">
+	</div>
+	<p>Hi {{firstname}},</p>
 
-	<p>Attached is your collaborator report for review.  The report includes a list of all sheets that are being shared with
-	Non-HP employees. Please remember to remove permission for those who no longer need access to your sheets.</p>
+	<p>See below for your collaborator report for review.  The report includes a list of all sheets that are currently being shared with
+	Non-HP employees. Please remember to remove permission for those who no longer need access to your sheets.  It's your responsibility to 
+	to maintain security of your HP Smartsheets.</p>
 
-	<table>
-		<tr>
-			<td>{{firstname}} {{lastname}}
-			</td>
-			<td align="right">
-				<img height="50px" width="50px" alt="hp.svg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/HP_logo_2012.svg/100px-HP_logo_2012.svg.png" width="100" height="100" srcset="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/HP_logo_2012.svg/150px-HP_logo_2012.svg.png 1.5x, https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/HP_logo_2012.svg/200px-HP_logo_2012.svg.png 2x">
-			</td>
-		</tr>
-	</table>
+	<p>Thanks,<br>
+	Smartsheet HP Admin
+	</p>
 
 	
+	<br>
+	<p>{{firstname}} {{lastname}}</p>
 	<table class="report">
 		<tr>
-			<td class="corner"></td>
+			<th></th>
 			{% for header in headers_in_email %}
 				<th >{{header}}</th>
 			{% endfor %}

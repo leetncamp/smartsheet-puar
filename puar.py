@@ -36,6 +36,9 @@ data = excel2dict(ns.filename)
 
 hpRE = re.compile("@hp.com", re.I)
 
+png_data = base64.b64encode(open("hp_logo.png", "rb").read())
+
+
 owners = {}
 count = 0
 for row in data:
@@ -53,7 +56,7 @@ for row in data:
 for owner in owners:
 	print(owner)
 if redirect_emails_to:
-	print(u"\nRedirecting emails to {0}".format(redirect_emails_to))
+	print(u"\nRedirecting emails to {0}!".format(redirect_emails_to))
 
 if stop_after:
 	print(u"\nStopping after {0} emails".format(stop_after))
@@ -84,12 +87,12 @@ for owner, rows in owners.iteritems():
 	msg.Html = html
 	addlHeaders = [["Precedence","bulk"], ['Disposition-Nofication-To', From]]
 
-	#try:
-	#	file("/tmp/delme.html", "wb").write(html)
-	#	os.system("open /tmp/delme.html")
-	#except:
-	#	pass
-	
+	try:
+		file("/tmp/delme.html", "wb").write(html)
+		os.system("open /tmp/delme.html")
+	except:
+		pass
+	debug()
 	#msg.customSend("smtp-auth.snl.salk.edu", "nips-assist", base64.b64decode(format))
 
 	msg.customSend(smtp_server)
