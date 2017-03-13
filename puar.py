@@ -12,9 +12,8 @@ import os, sys
 UTC = pytz.timezone("UTC")
 LA = pytz.timezone("America/Los_Angeles")
 from snlmailer import Message
-#from configuration import *  #pulls in variables defined in configuration.py
-print os.getcwd()
-execfile("configuration.py")
+from configuration import *  #pulls in variables defined in configuration.py
+
 
 
 from collections import OrderedDict
