@@ -34,7 +34,9 @@ parser.add_argument("filename", nargs="?", default=default_filename, help=u"File
 parser.add_argument("--go", action="store_true", help="with --go, the program does not wait for confirmation. It sends email. Useful for automated running. ")
 ns = parser.parse_args()
 
-data = excel2dict(ns.filename)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+data = excel2dict(os.path.join(BASE_DIR, ns.filename))
 
 hpRE = re.compile("@hp.com", re.I)
 
@@ -104,7 +106,7 @@ for owner, rows in owners.iteritems():
 		print(errors)
 	emails_sent += 1
 	dt = eval(now)
-	log.write(u"{0}\tEmailed {1} : {2}".format(dt, msg.To, html))
+	log.write(u"{0}\tEmailed {1}\n".format(dt, msg.To))
 	print(u"Sending to {0}".format(owner))
 	if stop_after and emails_sent >= stop_after:
 		print(u"Stopping early at {0} emails. See configuration.py stop_after".format(stop_after))
