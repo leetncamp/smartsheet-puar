@@ -14,8 +14,6 @@ LA = pytz.timezone("America/Los_Angeles")
 from snlmailer import Message
 from configuration import *  #pulls in variables defined in configuration.py
 
-
-
 from collections import OrderedDict
 import datetime
 import base64
