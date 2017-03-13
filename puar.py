@@ -16,6 +16,7 @@ from configuration import *  #pulls in variables defined in configuration.py
 from collections import OrderedDict
 import datetime
 import base64
+from nameparser import HumanName
 
 
 stop_after       = locals().get("stop_after", 0) #stop_after defaults to 0 if not present in configuration.py
@@ -77,8 +78,11 @@ for owner, rows in owners.iteritems():
 		#row["owner_email"] = owner.replace(u"@hp.com", u"")
 		row["Sheet Name"] = row[u"Name"]
 
-	firstname = owner.split(u".")[0].capitalize()
-	lastname = owner.split(u".")[1].split("@")[0].capitalize()
+
+	nameStr = u" ".join([item.capitalize() for item in owner.split(u"@")[0].split(".")])
+	name = HumanName(nameStr)
+	firstname = name.first
+	lastname = name.last
 	html = template.render(**locals())
 	To = redirect_emails_to if redirect_emails_to else owner
 	msg = Message(To=To, From=From)
@@ -94,7 +98,9 @@ for owner, rows in owners.iteritems():
 	#debug()
 	#msg.customSend("smtp-auth.snl.salk.edu", "nips-assist", base64.b64decode(format))
 
-	msg.customSend(smtp_server)
+	errors = msg.customSend(smtp_server)
+	if errors:
+		print(errors)
 	emails_sent += 1
 	dt = eval(now)
 	log.write(u"{0}\tEmailed {1} : {2}".format(dt, msg.To, html))
