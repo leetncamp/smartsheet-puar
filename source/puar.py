@@ -36,7 +36,7 @@ ns = parser.parse_args()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-data = excel2dict(os.path.join(BASE_DIR, ns.filename))
+data = excel2dict(os.path.join(BASE_DIR, "smartsheets-puar", ns.filename))
 
 hpRE = re.compile("@hp.com", re.I)
 
