@@ -18,7 +18,7 @@ from collections import OrderedDict
 import datetime
 import base64
 from nameparser import HumanName
-from progressbar import ProgressBar
+
 
 
 stop_after       = locals().get("stop_after", 0) #stop_after defaults to 0 if not present in configuration.py
@@ -36,6 +36,9 @@ parser.add_argument("--go", action="store_true", help="with --go, the program do
 ns = parser.parse_args()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(os.path.join(BASE_DIR, "source"))
+
+from progressbar import ProgressBar
 
 data = excel2dict(os.path.join(BASE_DIR, "smartsheets-puar", ns.filename))
 
@@ -46,10 +49,11 @@ hpRE = re.compile("@hp.com", re.I)
 owners = {}
 count = 0
 print(u"Processing spreadsheet{0}")
-debug()
-pb = ProgressBar()
-for row in data:
 
+pb = ProgressBar(end=len(data))
+for row in data:
+	pb + 1
+	print pb
 	count += 1
 	#print(u"processing row {0}".format(count))
 	shared_to = row[u"Shared To"]
@@ -60,8 +64,7 @@ for row in data:
 		
 	else:
 		continue #Skip this row if the Shared-to is an hp address
-	sys.stdout.write('.')
-	sys.stdout.flush()
+
 
 
 if redirect_emails_to:
