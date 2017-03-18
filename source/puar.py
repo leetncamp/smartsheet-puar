@@ -18,6 +18,7 @@ from collections import OrderedDict
 import datetime
 import base64
 from nameparser import HumanName
+from progressbar import ProgressBar
 
 
 stop_after       = locals().get("stop_after", 0) #stop_after defaults to 0 if not present in configuration.py
@@ -44,7 +45,9 @@ hpRE = re.compile("@hp.com", re.I)
 
 owners = {}
 count = 0
-print(u"Processing spreadsheet{0}"),
+print(u"Processing spreadsheet{0}")
+debug()
+pb = ProgressBar()
 for row in data:
 
 	count += 1
