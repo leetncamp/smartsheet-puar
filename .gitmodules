@@ -1,0 +1,6 @@
+[submodule "source/--recursive"]
+	path = source/--recursive
+	url = https://github.com/niltonvolpato/python-progressbar.git
+[submodule "source/python-progressbar"]
+	path = source/python-progressbar
+	url = https://github.com/niltonvolpato/python-progressbar.git

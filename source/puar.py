@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+import os, sys
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(os.path.join(BASE_DIR, "source"))
+
 from excel2dict import excel2dict
 from pdb import set_trace as debug
 import traceback
@@ -8,7 +12,6 @@ import re
 from jinja2 import Template
 import smtplib
 import pytz
-import os, sys
 UTC = pytz.timezone("UTC")
 LA = pytz.timezone("America/Los_Angeles")
 from snlmailer import Message
@@ -18,6 +21,7 @@ from collections import OrderedDict
 import datetime
 import base64
 from nameparser import HumanName
+
 
 
 
@@ -35,10 +39,9 @@ parser.add_argument("filename", nargs="?", default=default_filename, help=u"File
 parser.add_argument("--go", action="store_true", help="with --go, the program does not wait for confirmation. It sends email. Useful for automated running. ")
 ns = parser.parse_args()
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-os.chdir(os.path.join(BASE_DIR, "source"))
 
-from progressbar import ProgressBar
+
+
 
 data = excel2dict(os.path.join(BASE_DIR, "smartsheets-puar", ns.filename))
 
@@ -48,12 +51,10 @@ hpRE = re.compile("@hp.com", re.I)
 
 owners = {}
 count = 0
-print(u"Processing spreadsheet{0}")
 
-pb = ProgressBar(end=len(data))
+
+
 for row in data:
-	pb + 1
-	print pb
 	count += 1
 	#print(u"processing row {0}".format(count))
 	shared_to = row[u"Shared To"]

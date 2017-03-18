@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from __future__ import print_function
+
 
 """Convert a spreadsheet into a list of python dictionaries with keys pulled from row 1 as a header.
 Converts the first sheet (sheet 0), unless you pass in a sheet number."""
@@ -7,7 +9,7 @@ import os
 import sys
 from pdb import set_trace as debug
 import openpyxl
-
+import progressbar
 
 def excel2dict(path2xlsx, sheet=0):
 
@@ -23,15 +25,18 @@ def excel2dict(path2xlsx, sheet=0):
         headers[cell.col_idx - 1] = cell.value
 
     data = []
-    for row in ws.iter_rows(row_offset=1):
-        rowdict = {}
-        for colnumber, header in headers.iteritems():
-            try:
-                rowdict[header] = row[colnumber].value
-            except Exception as e:
-                print traceback.format_exc()
-                raw_input("Press Enter to continue")
-        data.append(rowdict)
+
+    with progressbar.ProgressBar(max_value=ws.max_row) as bar:
+        for row in ws.iter_rows(row_offset=1):
+            rowdict = {}
+            for colnumber, header in headers.iteritems():
+                try:
+                    rowdict[header] = row[colnumber].value
+                except Exception as e:
+                    print(traceback.format_exc())
+                    raw_input("Press Enter to continue")
+            data.append(rowdict)
+            bar.update(row[0].row)
     return(data) 
 
 
@@ -45,4 +50,4 @@ if __name__=="__main__":
     ns = parser.parse_args()
 
     result = excel2dict(ns.path, sheet=ns.sheet)
-    print result
+    print (result)
