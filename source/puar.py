@@ -44,7 +44,9 @@ hpRE = re.compile("@hp.com", re.I)
 
 owners = {}
 count = 0
+print(u"Processing spreadsheet{0}"),
 for row in data:
+
 	count += 1
 	#print(u"processing row {0}".format(count))
 	shared_to = row[u"Shared To"]
@@ -55,9 +57,10 @@ for row in data:
 		
 	else:
 		continue #Skip this row if the Shared-to is an hp address
+	sys.stdout.write('.')
+	sys.stdout.flush()
 
-for owner in owners:
-	print(owner)
+
 if redirect_emails_to:
 	print(u"\nRedirecting emails to {0}!".format(redirect_emails_to))
 
