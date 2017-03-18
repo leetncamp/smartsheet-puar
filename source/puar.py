@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 
 import os, sys
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,6 +22,7 @@ from collections import OrderedDict
 import datetime
 import base64
 from nameparser import HumanName
+import progressbar
 
 
 
@@ -42,7 +44,7 @@ ns = parser.parse_args()
 
 
 
-
+print("Reading spreadsheet...")
 data = excel2dict(os.path.join(BASE_DIR, "smartsheets-puar", ns.filename))
 
 hpRE = re.compile("@hp.com", re.I)
@@ -52,20 +54,20 @@ hpRE = re.compile("@hp.com", re.I)
 owners = {}
 count = 0
 
+print("Analyzing...")
+with progressbar.ProgressBar(max_value=len(data)) as bar:
+	for row in data:
+		count += 1
+		#print(u"processing row {0}".format(count))
+		shared_to = row[u"Shared To"]
 
-
-for row in data:
-	count += 1
-	#print(u"processing row {0}".format(count))
-	shared_to = row[u"Shared To"]
-
-	if shared_to and not hpRE.search(shared_to):
-		owner = row[u"Owner"]
-		owners[owner] = owners.get(owner, []) + [row]
-		
-	else:
-		continue #Skip this row if the Shared-to is an hp address
-
+		if shared_to and not hpRE.search(shared_to):
+			owner = row[u"Owner"]
+			owners[owner] = owners.get(owner, []) + [row]
+			
+		else:
+			continue #Skip this row if the Shared-to is an hp address
+	bar.update(count)
 
 
 if redirect_emails_to:
