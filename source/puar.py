@@ -89,9 +89,10 @@ if not ns.go:
 
 if not (redirect_emails_to == '' or redirect_emails_to.replace("'","").lower() == 'test' or u"@" in redirect_emails_to):
 	print("Exiting. You must either press Return, type 'test', or supply an email address")
-	os.system.exit()
 	if not ns.go:
 		raw_input("Press any key to exit.")
+	os.system.exit()
+
 
 if redirect_emails_to == "test":
 	redirect_emails_to = "smartsheet.hpadmin@hp.com"
