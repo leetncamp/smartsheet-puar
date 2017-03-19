@@ -7,7 +7,7 @@ from pdb import set_trace as debug
 BASE_DIR = os.path.abspath(__file__).split("source")[0]
 os.chdir(os.path.join(BASE_DIR, "source"))
 
-from excel2dict import excel2dict
+
 import traceback
 from argparse import ArgumentParser
 import re
@@ -24,9 +24,7 @@ import datetime
 import base64
 from nameparser import HumanName
 import progressbar
-
-
-
+import openpyxl
 
 stop_after       = locals().get("stop_after", 0) #stop_after defaults to 0 if not present in configuration.py
 default_filename = locals().get("default_filename", "UserAccessReport.xlsx")
@@ -42,37 +40,43 @@ parser.add_argument("filename", nargs="?", default=default_filename, help=u"File
 parser.add_argument("--go", action="store_true", help="with --go, the program does not wait for confirmation. It sends email. Useful for automated running. ")
 ns = parser.parse_args()
 
+path2xlsx = os.path.join(BASE_DIR, "smartsheet-puar", ns.filename)
 
 
+wb = openpyxl.load_workbook(path2xlsx)
+ws =  wb.worksheets[0]
 
-print("Reading spreadsheet...")
-data = excel2dict(os.path.join(BASE_DIR, "smartsheet-puar", ns.filename))
 
+headers = {}
 
+for cell in ws[1]:
+    headers[cell.col_idx - 1] = cell.value
+
+count = 0
 hpRE = re.compile("@hp.com", re.I)
 
-#png_data = base64.b64encode(open("image001.png", "rb").read())
+owners={}
 
-owners = {}
-count = 0
+print("Reading spreadsheet...")
 
+with progressbar.ProgressBar(widgets=[progressbar.Percentage(), progressbar.Bar()], max_value=ws.max_row) as bar:
+    for xlrow in ws.iter_rows(row_offset=1):
+    	count += 1
+        row = {}
+        for colnumber, header in headers.iteritems():
+            row[header] = xlrow[colnumber].value
 
-print("Analyzing spreadsheet...")
+        shared_to = row[u"Shared To"]
 
-pb = progressbar.ProgressBar(widgets=[progressbar.Percentage(), progressbar.Bar()], max_value=len(data)).start()
-for row in data:
-	count += 1
-	#print(u"processing row {0}".format(count))
-	shared_to = row[u"Shared To"]
+        if shared_to and not hpRE.search(shared_to):
+        	owner = row[u"Owner"]
+        	owners[owner] = owners.get(owner, []) + [row]
+        	
+        else:
+        	continue #Skip this row if the Shared-to is an hp address
 
-	if shared_to and not hpRE.search(shared_to):
-		owner = row[u"Owner"]
-		owners[owner] = owners.get(owner, []) + [row]
-		
-	else:
-		continue #Skip this row if the Shared-to is an hp address
-	pb.update(count)
-pb.finish()
+        bar.update(xlrow[0].row)
+
 
 if stop_after in locals() and stop_after:
 	print(u"\nStopping after {0} emails".format(stop_after))
@@ -118,14 +122,6 @@ for owner, rows in owners.iteritems():
 	msg.Subject = Subject
 	msg.Html = html
 	addlHeaders = [["Precedence","bulk"], ['Disposition-Nofication-To', From]]
-
-	#try:
-	#	file("/tmp/delme.html", "wb").write(html)
-	#	os.system("open /tmp/delme.html")
-	#except:
-	#	pass
-	#debug()
-	#msg.customSend("smtp-auth.snl.salk.edu", "nips-assist", base64.b64decode(format))
 
 	errors = msg.customSend(smtp_server)
 	if errors:
