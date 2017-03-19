@@ -18,12 +18,18 @@ UTC = pytz.timezone("UTC")
 LA = pytz.timezone("America/Los_Angeles")
 from snlmailer import Message
 
+
+
+Subject            = "Smartsheet non-HP collaborator report"
+From               = "smartsheet.hpadmin@hp.com"
+#smtp_server       = "smtp.snl.salk.edu"
+default_filename   = "UserAccessReport.xlsx"
+stop_after         = 0  #Set this to zero to send all emails. 
+
 try:
-	from configuration import *  #pulls in variables defined in configuration.py
+	from configuration import *  #pulls in variables defined in configuration.py and will overwrite the variables above. 
 except:
-	print("configuration.py not found. Have you copied configuration.py.sample to configuration.py?")
-	raw_input("Press any key to exit")
-	os.sys.exit(1)
+	pass
 
 from collections import OrderedDict
 import datetime
