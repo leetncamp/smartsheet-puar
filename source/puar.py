@@ -17,6 +17,7 @@ import pytz
 UTC = pytz.timezone("UTC")
 LA = pytz.timezone("America/Los_Angeles")
 from snlmailer import Message
+import shutil
 
 
 
@@ -52,8 +53,7 @@ parser.add_argument("filename", nargs="?", default=default_filename, help=u"File
 parser.add_argument("--go", action="store_true", help="with --go, the program does not wait for confirmation. It sends email. Useful for automated running. ")
 ns = parser.parse_args()
 
-path2xlsx = os.path.join(BASE_DIR, "smartsheet-puar", ns.filename)
-
+path2xlsx = os.path.join(BASE_DIR, "reports", ns.filename)
 mtime = datetime.datetime.fromtimestamp(os.path.getmtime(path2xlsx))
 
 
@@ -98,6 +98,8 @@ if stop_after in locals() and stop_after:
 if not ns.go:
 	redirect_emails_to = raw_input(u"\nSending {0} emails. Close the window to cancel. Press Enter to send. Type 'test'\nto redirect all emails to smartsheet.hpadmin@hp.com: ".format(len(owners)))
 
+#Sometimes we don't want to rename the report file. 
+rename_report = True if redirect_emails_to else False
 
 if not (redirect_emails_to == '' or redirect_emails_to.replace("'","").lower() == 'test' or u"@" in redirect_emails_to):
 	print("Exiting. You must either press Return, type 'test', or supply an email address")
@@ -119,6 +121,7 @@ emails_sent = 0
 email_log = []
 
 print("Sending emails...")
+
 pb = progressbar.ProgressBar(widgets=[progressbar.Percentage(), progressbar.Bar()], max_value=len(owners)).start()
 
 for owner, rows in owners.iteritems():
@@ -142,6 +145,7 @@ for owner, rows in owners.iteritems():
 	addlHeaders = [["Precedence","bulk"], ['Disposition-Nofication-To', From]]
 
 	errors = msg.customSend(smtp_server)
+
 	if errors:
 		print(errors)
 	emails_sent += 1
@@ -157,6 +161,10 @@ for owner, rows in owners.iteritems():
 print(u"Sent {0} emails".format(emails_sent))
 for owner in email_log:
 	print (owner)
+
+new_name = u"{0}.{1}.xlsx".format(ns.filename.split(".xlsx")[0], datetime.datetime.now().strftime("%m%d%Y"))
+shutil.move(path2xlsx, os.path.join(BASE_DIR, "reports", new_name))
+
 
 if not ns.go:
 	raw_input("Press any key to exit.")
