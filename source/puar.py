@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from __future__ import print_function
-print("Starting up...")
+print("Starting up...\n")
 import os, sys
 from pdb import set_trace as debug
 
@@ -42,6 +42,8 @@ ns = parser.parse_args()
 
 path2xlsx = os.path.join(BASE_DIR, "smartsheet-puar", ns.filename)
 
+mtime = datetime.datetime.fromtimestamp(os.path.getmtime(path2xlsx))
+
 
 wb = openpyxl.load_workbook(path2xlsx)
 ws =  wb.worksheets[0]
@@ -57,7 +59,7 @@ hpRE = re.compile("@hp.com", re.I)
 
 owners={}
 
-print("Reading spreadsheet...")
+print("Reading spreadsheet written on {0}...\n".format(mtime.strftime("%a %b %d, %Y  %I:%M %p")))
 
 with progressbar.ProgressBar(widgets=[progressbar.Percentage(), progressbar.Bar()], max_value=ws.max_row) as bar:
     for xlrow in ws.iter_rows(row_offset=1):
