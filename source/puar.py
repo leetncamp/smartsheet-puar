@@ -85,6 +85,7 @@ headers_in_email = [u'Sheet Name', u'Shared To Permission', u'Shared To']
 template = Template(open(u"template.html", 'rb').read())
 emails_sent = 0
 
+
 for owner, rows in owners.iteritems():
 
 	for row in rows:
