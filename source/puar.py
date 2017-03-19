@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from __future__ import print_function
-print("starting")
+print("Starting up...")
 import os, sys
 from pdb import set_trace as debug
 
@@ -46,7 +46,8 @@ ns = parser.parse_args()
 
 
 print("Reading spreadsheet...")
-data = excel2dict(os.path.join(BASE_DIR, "smartsheets-puar", ns.filename))
+data = excel2dict(os.path.join(BASE_DIR, "smartsheet-puar", ns.filename))
+
 
 hpRE = re.compile("@hp.com", re.I)
 
@@ -55,37 +56,48 @@ hpRE = re.compile("@hp.com", re.I)
 owners = {}
 count = 0
 
-print("Analyzing...")
-with progressbar.ProgressBar(max_value=len(data)) as bar:
-	for row in data:
-		count += 1
-		#print(u"processing row {0}".format(count))
-		shared_to = row[u"Shared To"]
 
-		if shared_to and not hpRE.search(shared_to):
-			owner = row[u"Owner"]
-			owners[owner] = owners.get(owner, []) + [row]
-			
-		else:
-			continue #Skip this row if the Shared-to is an hp address
-	bar.update(count)
+print("Analyzing spreadsheet...")
 
+pb = progressbar.ProgressBar(widgets=[progressbar.Percentage(), progressbar.Bar()], max_value=len(data)).start()
+for row in data:
+	count += 1
+	#print(u"processing row {0}".format(count))
+	shared_to = row[u"Shared To"]
 
-if redirect_emails_to:
-	print(u"\nRedirecting emails to {0}!".format(redirect_emails_to))
+	if shared_to and not hpRE.search(shared_to):
+		owner = row[u"Owner"]
+		owners[owner] = owners.get(owner, []) + [row]
+		
+	else:
+		continue #Skip this row if the Shared-to is an hp address
+	pb.update(count)
+pb.finish()
 
-if stop_after:
+if stop_after in locals() and stop_after:
 	print(u"\nStopping after {0} emails".format(stop_after))
 
 if not ns.go:
-	raw_input(u"\nFound {0} users needing notification. Press ^C to cancel. Any key to continue...".format(len(owners)))
+	redirect_emails_to = raw_input(u"\nSending {0} emails. Close the window to cancel. Press enter to send. Type 'test' to redirect all emails to smartsheet.hpadmin@hp.com: ".format(len(owners)))
+
+
+if not (redirect_emails_to == '' or redirect_emails_to.replace("'","").lower() == 'test' or u"@" in redirect_emails_to):
+	print("Exiting. You must either press Return, type 'test', or supply an email address")
+	os.system.exit()
+if redirect_emails_to == "test":
+	redirect_emails_to = "smartsheet.hpadmin@hp.com"
+
+
 
 log = file("log.txt", "a")
 
 headers_in_email = [u'Sheet Name', u'Shared To Permission', u'Shared To']
 template = Template(open(u"template.html", 'rb').read())
 emails_sent = 0
+email_log = []
 
+print("Sending emails...")
+pb = progressbar.ProgressBar(widgets=[progressbar.Percentage(), progressbar.Bar()], max_value=len(owners)).start()
 
 for owner, rows in owners.iteritems():
 
@@ -121,11 +133,16 @@ for owner, rows in owners.iteritems():
 	emails_sent += 1
 	dt = eval(now)
 	log.write(u"{0}\tEmailed {1}\n".format(dt, msg.To))
-	print(u"Sending to {0}".format(owner))
+	email_log.append(owner)
+	pb.update(emails_sent)
 	if stop_after and emails_sent >= stop_after:
 		print(u"Stopping early at {0} emails. See configuration.py stop_after".format(stop_after))
 		break
+	
 
 print(u"Sent {0} emails".format(emails_sent))
+for owner in email_log:
+	print (owner)
+
 if not ns.go:
 	raw_input("Press any key to exit.")

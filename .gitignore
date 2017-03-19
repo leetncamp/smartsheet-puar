@@ -5,4 +5,4 @@ dist
 log.txt
 *.pyc
 configuration.py
-smartsheets-puar/**
+smartsheet-puar/**

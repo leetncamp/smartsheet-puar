@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
+
 """Convert a spreadsheet into a list of python dictionaries with keys pulled from row 1 as a header.
 Converts the first sheet (sheet 0), unless you pass in a sheet number."""
 
@@ -25,7 +26,7 @@ def excel2dict(path2xlsx, sheet=0):
 
     data = []
 
-    with progressbar.ProgressBar(max_value=ws.max_row) as bar:
+    with progressbar.ProgressBar(widgets=[progressbar.Percentage(), progressbar.Bar()], max_value=ws.max_row) as bar:
         for row in ws.iter_rows(row_offset=1):
             rowdict = {}
             for colnumber, header in headers.iteritems():
