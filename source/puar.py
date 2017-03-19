@@ -22,6 +22,7 @@ try:
 	from configuration import *  #pulls in variables defined in configuration.py
 except:
 	print("configuration.py not found. Have you copied configuration.py.sample to configuration.py?")
+	raw_input("Press any key to exit")
 	os.sys.exit(1)
 
 from collections import OrderedDict
