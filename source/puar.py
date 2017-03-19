@@ -84,7 +84,7 @@ if stop_after in locals() and stop_after:
 	print(u"\nStopping after {0} emails".format(stop_after))
 
 if not ns.go:
-	redirect_emails_to = raw_input(u"\nSending {0} emails. Close the window to cancel. Press enter to send. Type 'test' to redirect all emails to smartsheet.hpadmin@hp.com: ".format(len(owners)))
+	redirect_emails_to = raw_input(u"\nSending {0} emails. Close the window to cancel. Press Enter to send. Type 'test'\nto redirect all emails to smartsheet.hpadmin@hp.com: ".format(len(owners)))
 
 
 if not (redirect_emails_to == '' or redirect_emails_to.replace("'","").lower() == 'test' or u"@" in redirect_emails_to):
