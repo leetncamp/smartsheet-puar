@@ -17,7 +17,12 @@ import pytz
 UTC = pytz.timezone("UTC")
 LA = pytz.timezone("America/Los_Angeles")
 from snlmailer import Message
-from configuration import *  #pulls in variables defined in configuration.py
+
+try:
+	from configuration import *  #pulls in variables defined in configuration.py
+except:
+	print("configuration.py not found. Have you copied configuration.py.sample to configuration.py?")
+	os.sys.exit(1)
 
 from collections import OrderedDict
 import datetime
