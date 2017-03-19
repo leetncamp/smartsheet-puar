@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 from __future__ import print_function
-
+print("starting")
 import os, sys
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from pdb import set_trace as debug
+
+BASE_DIR = os.path.abspath(__file__).split("source")[0]
 os.chdir(os.path.join(BASE_DIR, "source"))
 
 from excel2dict import excel2dict
-from pdb import set_trace as debug
 import traceback
 from argparse import ArgumentParser
 import re

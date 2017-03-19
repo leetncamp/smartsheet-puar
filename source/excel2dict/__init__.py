@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
-print("Starting...")
 """Convert a spreadsheet into a list of python dictionaries with keys pulled from row 1 as a header.
 Converts the first sheet (sheet 0), unless you pass in a sheet number."""
 
