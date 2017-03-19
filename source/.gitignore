@@ -4,4 +4,4 @@ build
 log.txt
 *.pyc
 configuration.py
-smartsheet-puar/**
+reports/**
