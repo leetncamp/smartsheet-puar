@@ -8,5 +8,5 @@
 
 ### Run the Program
 1. Download the UserAccessReport.xlsx into the reports folders
-2. Run the program using the shortcut you created on your desktop above.
+2. Run puar.exe using the shortcut you created on your desktop above.
 3. After a successful run, the spreadsheet is renamed with a date stamp. 
