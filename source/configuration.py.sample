@@ -2,5 +2,4 @@ Subject            = "Smartsheet non-HP collaborator report"
 From               = "smartsheet.hpadmin@hp.com"
 #smtp_server       = "smtp.snl.salk.edu"
 default_filename   = "UserAccessReport.xlsx"
-redirect_emails_to = "terrence.gaines@hp.com"  #Normally an empty string.  Set to your email address to send all output to you. 
-stop_after         = 1  #Set this to zero to send all emails. 
+stop_after         = 0  #Set this to zero to send all emails. 
